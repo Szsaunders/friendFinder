@@ -7,6 +7,7 @@
 var friendData = require("../data/friends");
 
 
+
 // ===============================================================================
 // ROUTING
 // ===============================================================================
@@ -19,7 +20,7 @@ module.exports = function(app) {
   // ---------------------------------------------------------------------------
   
   app.get("/api/friends", function(req, res) {
-    res.json(friendArray);
+    res.json(friendData);
   });
   
   
@@ -30,28 +31,26 @@ module.exports = function(app) {
   // (ex. User fills out a reservation request... this data is then sent to the server...
   // Then the server saves the data to the tableData array)
   // ---------------------------------------------------------------------------
-  
+
   app.post("/api/friends", function(req, res) {
-    // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-    // It will do this by sending out the value "true" have a table
-    // req.body is available since we're using the body-parser middleware
-    // console.log(req)
-    // console.log(res)
-    // console.log(friendData)
-    // var scorekeeper= [100, -1];
-    // for (i=0;i<friendData.length;i++) {
-    //   var tempScore;
-    //   for (k=0;k<10;k++){
-    //     tempScore += Math.abs(friendData[i].scores[k] - req.body.scores[k])        
-    //   }
-    //   if (tempScore < scorekeeper[0]) {
-    //     scorekeeper = [tempScore, i]
-    //   }
-    // }
-    // var bestie = scorekeeper[1]
-    // res.push(friendData[bestie])
+    var scorekeeper= [100, -1];
+    for (i=0;i<friendData.length;i++) {
+      var tempScore = 0;
+      console.log(friendData[i].scores)
+      console.log(req.body.scores)
+      for (k=0;k<10;k++){
+        tempScore += Math.abs(friendData[i].scores[k] - req.body.scores[k])
+        // console.log(tempScore)   
+      }
+      if (tempScore < scorekeeper[0]) {
+        scorekeeper = [tempScore, i]
+      }
+    }
+    console.log(scorekeeper)
+    var bestie = scorekeeper[1]
+    res.json(friendData[bestie])
     
-    // }
+    
   });
   
   ;

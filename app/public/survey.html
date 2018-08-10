@@ -16,7 +16,7 @@
     <div class="container">
         
         <div class="jumbotron">
-            <h1 class="text-center"><span class="fa fa-fire"></span> Personality Survey!</h1>
+            <h1 class="text-center"><span class="fa fa-fire"></span> Personality Survey! <span class="fa fa-fire"></span></h1>
             <hr>
             <h2 class="text-center">Pick a number based on how much you identify with the statement. The higher the number, the more you identify with it!</h2>
             <br>
@@ -164,71 +164,77 @@
                 
             </div>
         </div>
-
-        <div class="modal" tabindex="-1" role="dialog" aria-labelledby="compatabilityResults">
-                <div class="modal-dialog-centered modal-dialog" role="document">
-                  <div class="modal-content">
+        
+        <div class="modal" tabindex="-1" id="compatabilityResults" role="dialog" aria-labelledby="compatabilityResults">
+            <div class="modal-dialog-centered modal-dialog" role="document">
+                <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Modal title</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="modal-body">
-                      <p>Modal body text goes here.</p>
+                    <div id="results" class="modal-body">
+                        
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                  </div>
                 </div>
-              </div>
-
+            </div>
+        </div>
+        
         <script type="text/javascript">
-
+            
             // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
             // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
             // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
             // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
-        
+            
             $(".submit").on("click", function(event) {
-              event.preventDefault();
-        
-              // Here we grab the form elements
-              var newFriend = {
-                friendName: $("#name").val().trim(),
-                q1: $("#q1").val().trim(),
-                q2: $("#q2").val().trim(),
-                q3: $("#q3").val().trim(),
-                q4: $("#q4").val().trim(),
-                q5: $("#q5").val().trim(),
-                q6: $("#q6").val().trim(),
-                q7: $("#q7").val().trim(),
-                q8: $("#q8").val().trim(),
-                q9: $("#q9").val().trim(),
-                q10: $("#q10").val().trim(),
-                scores: [q1,q2,q3,q4,q5,q6,q7,q8,q9,q10]
-              };
-        
-              console.log(newFriend);
-        
-              // This line is the magic. It"s very similar to the standard ajax function we used.
-              // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-              // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-              // depending on if a tables is available or not.
-        
-              $.post("/api/friends", newFriend,
-                function(data) {
-        
-                //   console.log(req + "k")
-                //   console.log(res)
-                //   console.log(friendArray)
-        
+                event.preventDefault();
+                $("#results").empty()
+                var announce = $("<h3>").addClass("text-center").text("Your most compatible bear is...")
+                $("#results").append(announce)
+                
+                // Here we grab the form elements
+                var newFriend = {
+                    friendName: $("#name").val().trim(),
+                    scores: [$("#q1").val().trim(),
+                    $("#q2").val().trim(),
+                    $("#q3").val().trim(),
+                    $("#q4").val().trim(),
+                    $("#q5").val().trim(),
+                    $("#q6").val().trim(),
+                    $("#q7").val().trim(),
+                    $("#q8").val().trim(),
+                    $("#q9").val().trim(),
+                    $("#q10").val().trim()]
+                };
+              
+                newFriend.scores = $.map(newFriend.scores, function(x) {return parseInt(x)})
+
+                
+                // This line is the magic. It"s very similar to the standard ajax function we used.
+                // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+                // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+                // depending on if a tables is available or not.
+                
+                $.post("/api/friends", newFriend)
+                .then(function(data) {
+                   
+                    
+                    var p = $("<h2>").addClass("text-center").text(data.name)
+                    var img = $("<img>").attr("src", data.photo).addClass("img-fluid")
+                    var div = $("<div>").append(p).append(img)
+
+                    $("#results").append(div)
+                    
                 });
-        
+                
             });
-        
+            
         </script>
         
-
+        
     </body>

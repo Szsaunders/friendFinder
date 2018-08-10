@@ -24,7 +24,7 @@ var friendArray = [
 
   {
     name: "Yogi",
-    photo: "https://cdn3.volusion.com/xmsph.easqh/v/vspfiles/photos/177532-2.jpg",
+    photo: "https://www.lazyriverny.com//wp-content/uploads/sites/8/2017/05/0-yogi-1.jpg",
     scores: [
       5,
       5,
