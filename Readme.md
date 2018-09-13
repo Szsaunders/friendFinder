@@ -4,4 +4,4 @@ Have you ever thought about bears? Have you ever wanted to know which famous bea
 
 *Three. Exactly three bears.
 
-Lessons learnt: How to handle Heroku for publishing sites; incorporating html generation with databases.
+Important skills: How to handle Heroku for publishing sites; incorporating html generation with databases.
